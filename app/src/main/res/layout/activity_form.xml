@@ -17,85 +17,78 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="NAME"
-            android:id="@+id/id_text_name" />
+            android:text="NAME" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editText" />
+            android:id="@+id/et_name" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="COMPANY"
-            android:id="@+id/id_text_company" />
+            android:text="COMPANY" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editText2" />
+            android:id="@+id/et_company" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MOBILE"
-            android:id="@+id/id_text_mobile" />
+            android:text="MOBILE" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="phone"
             android:ems="10"
-            android:id="@+id/editText3" />
+            android:id="@+id/et_mobile" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="EMAIL"
-            android:id="@+id/id_text_email" />
+            android:text="EMAIL" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:ems="10"
-            android:id="@+id/editText4" />
+            android:id="@+id/et_email" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PRODUCT INTEREST"
-            android:id="@+id/id_text_prod_interest" />
+            android:text="PRODUCT INTEREST" />
 
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/spinner" />
+            android:id="@+id/sp_prod_int" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="NOTES"
-            android:id="@+id/id_text_notes" />
+            android:text="NOTES" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editText5" />
+            android:id="@+id/et_notes" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DATE"
-            android:id="@+id/id_text_date" />
+            android:text="DATE" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="date"
             android:ems="10"
-            android:id="@+id/editText6" />
+            android:id="@+id/et_date" />
 
         <Button
             android:layout_width="wrap_content"
