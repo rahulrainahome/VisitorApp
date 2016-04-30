@@ -91,9 +91,10 @@
             android:id="@+id/et_date" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="270dp"
             android:layout_height="wrap_content"
             android:text="SUBMIT"
+            android:layout_marginTop="25dp"
             android:id="@+id/id_button_submit"
             android:layout_gravity="center_horizontal" />
 
