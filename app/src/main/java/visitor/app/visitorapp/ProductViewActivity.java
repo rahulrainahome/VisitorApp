@@ -18,8 +18,9 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+
+import visitor.app.utils.Constants;
 
 public class ProductViewActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
 
