@@ -73,6 +73,7 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         adapter = new ArrayAdapter<String>(FormActivity.this, android.R.layout.simple_spinner_dropdown_item, list);
+        spProdInt.setAdapter(adapter);
         spProdInt.setOnItemSelectedListener(this);
         btnSubmit.setOnClickListener(this);
     }
@@ -116,7 +117,7 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
 
         if (id == R.id.action_save)
         {
-
+            saveData();
         }
         else if(id == R.id.action_discard)
         {
@@ -140,8 +141,17 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
+        saveData();
+    }
 
+    /**
+     * @method: saveData
+     * @desc: This method gets data from fields, validated and saves in DB.
+     */
+    private void saveData()
+    {
         //validate the field data.
         String name = txtName.getText().toString();
         String company = txtCompany.getText().toString();
@@ -152,7 +162,7 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
 
         //if valid then save in DB.
         mydatabase.execSQL("INSERT INTO visitor (name, company, mobile, email, notes, date, prodint) VALUES ('" + name + "','" + company + "','" + mobile + "','" + email + "','" + notes + "','" + date + "','" + selectProdInt + "')");
-
+        Toast.makeText(getApplicationContext(), "Visitor data added", Toast.LENGTH_SHORT).show();
     }
 
 
