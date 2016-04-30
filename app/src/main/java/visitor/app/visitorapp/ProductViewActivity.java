@@ -33,10 +33,11 @@ public class ProductViewActivity extends AppCompatActivity implements AdapterVie
         setContentView(R.layout.activity_product_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        lw = (ListView)findViewById(R.id.listView1);
 
         //Get Product Interest data from Shared Prederences.
         SharedPreferences s = getSharedPreferences(Constants.pref_prod, 0);
-        String prodInt = s.getString("data","[]");
+        String prodInt ="" + s.getString("data","[]");
         list = new ArrayList<String>();
 
         //parse data into JSONArray and then into ArrayList
@@ -61,7 +62,7 @@ public class ProductViewActivity extends AppCompatActivity implements AdapterVie
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createCategory();
+                createProductInterest();
             }
         });
     }
@@ -80,10 +81,10 @@ public class ProductViewActivity extends AppCompatActivity implements AdapterVie
     }
 
     /**
-     * @method: createCategory
-     * @desc: Creates input AlertDialog to inout category string and then inserts in the SQLite DB.
+     * @method: createProductInterest
+     * @desc: Creates input AlertDialog to inout product interest string and then inserts in the cache.
      */
-    private void createCategory()
+    private void createProductInterest()
     {
         //Create AlertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

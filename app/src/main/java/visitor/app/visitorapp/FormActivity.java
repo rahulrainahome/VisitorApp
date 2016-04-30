@@ -1,10 +1,13 @@
 package visitor.app.visitorapp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,26 +17,25 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 
 public class FormActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
-    //UIView instances declerations.
+    //UIView instances declarations.
     EditText txtName, txtCompany, txtMobile, txtEmail, txtNotes, txtDate;
     Spinner spProdInt;
     Button btnSubmit;
 
-    //SQLiteDatabase object decleration.
+    //SQLiteDatabase object declaration.
     SQLiteDatabase mydatabase = null;
 
-    //Other data objects and data-structires.
+    //Other data objects and data-structures.
     ArrayAdapter<String> adapter  = null;
     ArrayList<String> list = null;
 
-    //Flags declerations.
+    //Flags declarations.
     String selectProdInt = "";
 
     @Override
@@ -98,6 +100,31 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         }
         super.onPause();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_form, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.action_save)
+        {
+
+        }
+        else if(id == R.id.action_discard)
+        {
+            startActivity(new Intent(FormActivity.this, ProductViewActivity.class));
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
