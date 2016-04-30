@@ -2,6 +2,7 @@ package visitor.app.visitorapp;
 
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -69,7 +70,7 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
             Toast.makeText(getApplicationContext(), "JSONArray parsing Exception while processing Product Interest list", Toast.LENGTH_LONG).show();
         }
 
-        adapter = new ArrayAdapter<String>(FormActivity.this, android.R.layout.simple_spinner_dropdown_item, Constants.list);
+        adapter = new ArrayAdapter<String>(FormActivity.this, android.R.layout.simple_spinner_dropdown_item, list);
         spProdInt.setOnItemSelectedListener(this);
         btnSubmit.setOnClickListener(this);
     }
@@ -78,6 +79,7 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onResume() {
 
         super.onResume();
+
         //Create and open db. and create table for first time.
         mydatabase = openOrCreateDatabase(Constants.dbname, MODE_PRIVATE, null);
         mydatabase.execSQL("CREATE TABLE IF NOT EXISTS visitor(id INTEGER PRIMARY KEY NOT NULL, name varchar, company varchar, mobile varchar, email varchar, notes varchar, date varchar, prodint varchar );");
@@ -101,7 +103,8 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        selectProdInt = Constants.list.get(position).toString();
+        selectProdInt = list.get(position).toString();
+        Snackbar.make(view, "Selected: " + list.get(position).toString(), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
@@ -113,11 +116,17 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onClick(View v) {
 
         //validate the field data.
-
+        String name = txtName.getText().toString();
+        String company = txtCompany.getText().toString();
+        String mobile = txtMobile.getText().toString();
+        String email = txtEmail.getText().toString();
+        String notes = txtNotes.getText().toString();
+        String date = txtDate.getText().toString();
 
         //if valid then save in DB.
-
+        mydatabase.execSQL("INSERT INTO visitor (name, company, mobile, email, notes, date, prodint) VALUES ('" + name + "','" + company + "','" + mobile + "','" + email + "','" + notes + "','" + date + "','" + selectProdInt + "')");
 
     }
+
 
 }

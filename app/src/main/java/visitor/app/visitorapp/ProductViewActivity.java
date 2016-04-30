@@ -1,6 +1,7 @@
 package visitor.app.visitorapp;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,13 +14,18 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import org.json.JSONArray;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ProductViewActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
 
     ListView lw;
     ArrayAdapter<String> adapter = null;
+    ArrayList<String> list = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +34,26 @@ public class ProductViewActivity extends AppCompatActivity implements AdapterVie
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        adapter = new ArrayAdapter<String>(ProductViewActivity.this, android.R.layout.simple_list_item_1, Constants.list);
+        //Get Product Interest data from Shared Prederences.
+        SharedPreferences s = getSharedPreferences(Constants.pref_prod, 0);
+        String prodInt = s.getString("data","[]");
+        list = new ArrayList<String>();
+
+        //parse data into JSONArray and then into ArrayList
+        try
+        {
+            JSONArray jarray = new JSONArray(prodInt.toString());
+            for(int i = 0; i < jarray.length(); i++)
+            {
+                list.add("" + jarray.getString(i));
+            }
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(), "JSONArray parsing Exception while processing Product Interest list", Toast.LENGTH_LONG).show();
+        }
+
+        adapter = new ArrayAdapter<String>(ProductViewActivity.this, android.R.layout.simple_list_item_1, list);
         lw.setAdapter(adapter);
         lw.setOnItemLongClickListener(this);
 
