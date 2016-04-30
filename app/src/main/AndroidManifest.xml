@@ -18,6 +18,14 @@
         <activity
             android:name=".ProductViewActivity"
             android:label="@string/title_activity_product_view"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewActivity"
+            android:label="@string/title_activity_view"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".VisitorActivity"
+            android:label="@string/title_activity_visitor"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
