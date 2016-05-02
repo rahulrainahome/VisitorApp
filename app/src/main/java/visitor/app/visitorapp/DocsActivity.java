@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 import visitor.app.utils.Constants;
 
-public class ProductViewActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
+public class DocsActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
 
     ListView lw;
     ArrayAdapter<String> adapter = null;
@@ -32,52 +32,56 @@ public class ProductViewActivity extends AppCompatActivity implements AdapterVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_product_view);
+        setContentView(R.layout.activity_docs);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        lw = (ListView)findViewById(R.id.listView1);
 
-        //Get Product Interest data from Shared Prederences.
+        //Get sharedPreferences
         s = getSharedPreferences(Constants.pref_prod, 0);
-        String prodInt ="" + s.getString("data","[]");
-        list = new ArrayList<String>();
-
-        //parse data into JSONArray and then into ArrayList
         try
         {
-            JSONArray jarray = new JSONArray(prodInt.toString());
-            for(int i = 0; i < jarray.length(); i++)
+            //Get data from sharedPref and parse into JSONArray and then ArrayList.
+            String strData = s.getString("data","[]");
+            JSONArray jsonArray = new JSONArray(strData);
+            list = new ArrayList<String>();
+            for(int a = 0; a < jsonArray.length(); a++)
             {
-                list.add("" + jarray.getString(i));
+                list.add("" + jsonArray.getString(a));
             }
         }
         catch (Exception e)
         {
-            Toast.makeText(getApplicationContext(), "JSONArray parsing Exception while processing Product Interest list", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Some internal error ocurred.\n Please restart the app.", Toast.LENGTH_LONG).show();
         }
 
-        adapter = new ArrayAdapter<String>(ProductViewActivity.this, android.R.layout.simple_list_item_1, list);
-        lw.setAdapter(adapter);
+        //Init listView and adapter and do longitemclick event handling.
+        lw = (ListView)findViewById(R.id.listView);
+        adapter = new ArrayAdapter<String>(DocsActivity.this, android.R.layout.simple_list_item_1, list);
         lw.setOnItemLongClickListener(this);
 
+        //FloatActionButton to add new document.
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createProductInterest();
+
+                //Create new Attachment
+                createAttachment();
             }
         });
+
     }
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
         final int pos = position;
+
+        //Prompt in snackbar before deletion.
         Snackbar.make(view, "Are you sure to delete this?", Snackbar.LENGTH_LONG)
                 .setAction("Yes ?", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         try {
                             //Get the old data from cache and remove selected data and again save in cache.
                             String oldStr = s.getString("data", "[]");
@@ -87,22 +91,28 @@ public class ProductViewActivity extends AppCompatActivity implements AdapterVie
                             {
                                 if(a == pos)
                                 {
+                                    //leave the deleting entry.
                                     continue;
                                 }
                                 newjson.put("" + json.getString(a));
                             }
-                            SharedPreferences.Editor se = getSharedPreferences(Constants.pref_prod, 0).edit();
+
+                            //Save new data in cache.
+                            SharedPreferences.Editor se = getSharedPreferences(Constants.pref_docs, 0).edit();
                             se.putString("data", newjson.toString());
                             se.commit();
 
                             //Again get data from cache and parse into list and reload listView.
                             json = new JSONArray(s.getString("data", "[]"));
                             list.clear();
+
                             for(int a = 0; a < json.length(); a++)
                             {
                                 list.add("" + json.getString(a));
                             }
+
                             adapter.notifyDataSetChanged();
+
                             Toast.makeText(getApplicationContext(), "Successfully Deleted.", Toast.LENGTH_SHORT).show();
                         } catch (Exception e) {
                             Toast.makeText(getApplicationContext(), "Exception: Some internal error ocurred.", Toast.LENGTH_LONG).show();
@@ -115,14 +125,14 @@ public class ProductViewActivity extends AppCompatActivity implements AdapterVie
     }
 
     /**
-     * @method: createProductInterest
-     * @desc: Creates input AlertDialog to input product interest string and then inserts in the cache.
+     * @method: createAttachment
+     * @desc: Creates input AlertDialog to input  string and then inserts in the cache.
      */
-    private void createProductInterest()
+    private void createAttachment()
     {
         //Create AlertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("New Product Interest");
+        builder.setTitle("New Document");
         builder.setCancelable(false);
 
         // Set up the EditText.
@@ -141,7 +151,7 @@ public class ProductViewActivity extends AppCompatActivity implements AdapterVie
                             String oldStr = s.getString("data", "[]");
                             JSONArray json = new JSONArray(oldStr);
                             json.put("" + newStr);
-                            SharedPreferences.Editor se = getSharedPreferences(Constants.pref_prod, 0).edit();
+                            SharedPreferences.Editor se = getSharedPreferences(Constants.pref_docs, 0).edit();
                             se.putString("data", json.toString());
                             se.commit();
                             json = new JSONArray(s.getString("data", "[]"));
@@ -170,4 +180,5 @@ public class ProductViewActivity extends AppCompatActivity implements AdapterVie
         );
         builder.show();
     }
+
 }
