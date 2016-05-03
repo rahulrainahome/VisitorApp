@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
     EditText txtName, txtCompany, txtMobile, txtEmail, txtNotes, txtDate;
     Spinner spProdInt;
     Button btnSubmit;
+    LinearLayout ll;
 
     //SQLiteDatabase object declaration.
     SQLiteDatabase mydatabase = null;
@@ -56,6 +58,7 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
         txtDate = (EditText)findViewById(R.id.et_date);
         spProdInt = (Spinner)findViewById(R.id.sp_prod_int);
         btnSubmit = (Button)findViewById(R.id.id_button_submit);
+        ll = (LinearLayout)findViewById(R.id.lay_new_mob);
 
         //Set the current date in field.
         Calendar c = Calendar.getInstance();
