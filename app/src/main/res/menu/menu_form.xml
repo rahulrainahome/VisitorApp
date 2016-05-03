@@ -2,12 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/action_discard" android:icon="@android:drawable/ic_menu_delete"
-        android:orderInCategory="100" app:showAsAction="ifRoom"
-        android:title="Discard" />
+    <item android:id="@+id/action_visitor"
+        android:orderInCategory="100" app:showAsAction="never"
+        android:title="Visitors" />
 
-    <item android:id="@+id/action_save" android:icon="@android:drawable/ic_menu_save"
-        android:orderInCategory="100" app:showAsAction="ifRoom"
-        android:title="Add" />
+    <item android:id="@+id/action_product"
+        android:orderInCategory="100" app:showAsAction="never"
+        android:title="Product Interest" />
+
+    <item android:id="@+id/action_docs"
+        android:orderInCategory="100" app:showAsAction="never"
+        android:title="Attachment Docs" />
+
+    <item android:id="@+id/action_export"
+        android:orderInCategory="100" app:showAsAction="never"
+        android:title="Export Data" />
 
 </menu>

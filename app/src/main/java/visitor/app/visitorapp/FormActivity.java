@@ -18,7 +18,9 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import visitor.app.utils.Constants;
 
@@ -54,6 +56,12 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
         txtDate = (EditText)findViewById(R.id.et_date);
         spProdInt = (Spinner)findViewById(R.id.sp_prod_int);
         btnSubmit = (Button)findViewById(R.id.id_button_submit);
+
+        //Set the current date in field.
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMMM-yyyy");
+        String datee = sdfDate.format(c.getTime());
+        txtDate.setText(datee.toString());
 
         //Get Product Interest data from Shared Prederences.
         SharedPreferences s = getSharedPreferences(Constants.pref_prod, 0);
@@ -106,6 +114,14 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
+    public void onBackPressed() {
+
+        Toast.makeText(FormActivity.this, "Data Discarded.", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(FormActivity.this, ViewActivity.class));
+        finish();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_form, menu);
@@ -116,16 +132,30 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
+        switch(id)
+        {
+            case R.id.action_visitor:
 
-        if (id == R.id.action_save)
-        {
-            saveData();
+                startActivity(new Intent(FormActivity.this, ViewActivity.class));
+                finish();
+                break;
+            case R.id.action_product:
+
+                startActivity(new Intent(FormActivity.this, ProductViewActivity.class));
+                finish();
+                break;
+            case R.id.action_docs:
+
+                startActivity(new Intent(FormActivity.this, DocsActivity.class));
+                finish();
+                break;
+            case R.id.action_export:
+
+                startActivity(new Intent(FormActivity.this, ExportActivity.class));
+                finish();
+                break;
         }
-        else if(id == R.id.action_discard)
-        {
-            startActivity(new Intent(FormActivity.this, ProductViewActivity.class));
-            finish();
-        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -134,8 +164,7 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
         selectProdInt = list.get(position).toString();
-        Snackbar.make(view, "Selected: " + list.get(position).toString(), Snackbar.LENGTH_SHORT).show();
-    }
+   }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
