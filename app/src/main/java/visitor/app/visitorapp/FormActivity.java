@@ -52,7 +52,6 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
         //View Mapping to layout xml
         txtName = (EditText)findViewById(R.id.et_name);
         txtCompany = (EditText)findViewById(R.id.et_company);
-        txtMobile = (EditText)findViewById(R.id.et_mobile);
         txtEmail = (EditText)findViewById(R.id.et_email);
         txtNotes = (EditText)findViewById(R.id.et_notes);
         txtDate = (EditText)findViewById(R.id.et_date);
