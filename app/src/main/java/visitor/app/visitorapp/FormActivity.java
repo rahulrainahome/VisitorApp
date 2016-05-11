@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -193,7 +194,11 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
             case R.id.id_button_addphone:
 
                 //Add phone field.
-                Toast.makeText(getApplicationContext(), "Add phone field", Toast.LENGTH_SHORT).show();
+                ViewGroup.LayoutParams params = lw.getLayoutParams();
+                holder.add("");
+                phoneAdapter.notifyDataSetChanged();
+                params.height = 200 * holder.size();
+                lw.setLayoutParams(params);
 
                 break;
             case R.id.id_button_submit:

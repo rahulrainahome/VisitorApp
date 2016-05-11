@@ -3,6 +3,8 @@ package visitor.app.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +33,11 @@ public class PhoneAdapter extends ArrayAdapter<String> {
         this.inflater = activity.getLayoutInflater();
         this.event = event;
         this.holder = holder;
+
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         View view = inflater.inflate(R.layout.list_add_phone, null);
 
@@ -42,10 +45,38 @@ public class PhoneAdapter extends ArrayAdapter<String> {
         ImageView img = (ImageView)view.findViewById(R.id.imageView);
 
         e.setTag("" + position);
-        img.setTag("" + position);
+        e.setText(holder.get(position));
+        e.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        img.setOnClickListener(event);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                holder.set(position, s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+        if(position != 0) //First number is important.
+        {
+            img.setTag("" + position);
+            img.setOnClickListener(event);
+            img.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            img.setVisibility(View.GONE);
+        }
 
         return view;
     }
+
 }

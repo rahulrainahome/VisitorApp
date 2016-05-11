@@ -60,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/rect_border"
                 android:padding="5dp"
+
                 android:id="@+id/listView2" />
 
             <Button
