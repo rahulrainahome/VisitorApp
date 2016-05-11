@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import visitor.app.adapter.PhoneAdapter;
 import visitor.app.utils.Constants;
 
 
@@ -31,8 +33,8 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
     //UIView instances declarations.
     EditText txtName, txtCompany, txtMobile, txtEmail, txtNotes, txtDate;
     Spinner spProdInt;
-    Button btnSubmit;
-    LinearLayout ll;
+    Button btnSubmit, btnAddPhone;
+    ListView lw;
 
     //SQLiteDatabase object declaration.
     SQLiteDatabase mydatabase = null;
@@ -40,6 +42,8 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
     //Other data objects and data-structures.
     ArrayAdapter<String> adapter  = null;
     ArrayList<String> list = null;
+    PhoneAdapter phoneAdapter = null;
+    ArrayList<String> holder = null;
 
     //Flags declarations.
     String selectProdInt = "";
@@ -57,7 +61,14 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
         txtDate = (EditText)findViewById(R.id.et_date);
         spProdInt = (Spinner)findViewById(R.id.sp_prod_int);
         btnSubmit = (Button)findViewById(R.id.id_button_submit);
-        ll = (LinearLayout)findViewById(R.id.lay_new_mob);
+        btnAddPhone = (Button)findViewById(R.id.id_button_addphone);
+        lw = (ListView)findViewById(R.id.listView2);
+
+        //Handling ListView
+        holder = new ArrayList<String>();
+        holder.add("");
+        phoneAdapter = new PhoneAdapter(FormActivity.this, this, this, holder);
+        lw.setAdapter(phoneAdapter);
 
         //Set the current date in field.
         Calendar c = Calendar.getInstance();
@@ -88,6 +99,7 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
         spProdInt.setAdapter(adapter);
         spProdInt.setOnItemSelectedListener(this);
         btnSubmit.setOnClickListener(this);
+        btnAddPhone.setOnClickListener(this);
     }
 
     @Override
@@ -176,7 +188,28 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onClick(View v)
     {
-        saveData();
+        switch (v.getId())
+        {
+            case R.id.id_button_addphone:
+
+                //Add phone field.
+                Toast.makeText(getApplicationContext(), "Add phone field", Toast.LENGTH_SHORT).show();
+
+                break;
+            case R.id.id_button_submit:
+
+                //Save the data.
+                saveData();
+
+                break;
+            case R.id.imageView:
+
+                //Handle phone field remove option.
+                String tagVal = String.valueOf(v.getTag());
+                Toast.makeText(getApplicationContext(), "" + tagVal, Toast.LENGTH_SHORT).show();
+
+                break;
+        }
     }
 
     /**

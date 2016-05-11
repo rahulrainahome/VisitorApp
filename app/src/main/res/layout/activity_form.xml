@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:text="Add New Phone"
                 android:layout_marginTop="5dp"
-                android:id="@+id/button" />
+                android:id="@+id/id_button_addphone" />
 
             <TextView
                 android:layout_width="wrap_content"

@@ -9,4 +9,6 @@ public class Constants {
     public static String pref_prod = "prodInt";
     public static String pref_docs = "docsAtt";
 
+    public static ArrayList<String> phones = null;
+
 }
