@@ -1,6 +1,7 @@
 package visitor.app.visitorapp;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,7 +18,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import visitor.app.utils.Constants;
@@ -57,6 +60,7 @@ public class DocsActivity extends AppCompatActivity implements AdapterView.OnIte
         //Init listView and adapter and do longitemclick event handling.
         lw = (ListView)findViewById(R.id.listView);
         adapter = new ArrayAdapter<String>(DocsActivity.this, android.R.layout.simple_list_item_1, list);
+        lw.setAdapter(adapter);
         lw.setOnItemLongClickListener(this);
 
         //FloatActionButton to add new document.
@@ -65,8 +69,10 @@ public class DocsActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(View view) {
 
-                //Create new Attachment
-                createAttachment();
+                //Pick new file using intent.
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("file/*");
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -124,61 +130,54 @@ public class DocsActivity extends AppCompatActivity implements AdapterView.OnIte
         return true;
     }
 
-    /**
-     * @method: createAttachment
-     * @desc: Creates input AlertDialog to input  string and then inserts in the cache.
-     */
-    private void createAttachment()
-    {
-        //Create AlertDialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("New Document");
-        builder.setCancelable(false);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        // Set up the EditText.
-        final EditText input = new EditText(this);
-
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
-
-        // Set up the buttons
-        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        String newStr = input.getText().toString();
-                        try {
-                            String oldStr = s.getString("data", "[]");
-                            JSONArray json = new JSONArray(oldStr);
-                            json.put("" + newStr);
-                            SharedPreferences.Editor se = getSharedPreferences(Constants.pref_docs, 0).edit();
-                            se.putString("data", json.toString());
-                            se.commit();
-                            json = new JSONArray(s.getString("data", "[]"));
-                            list.clear();
-                            for (int a = 0; a < json.length(); a++) {
-                                list.add("" + json.getString(a));
-                            }
-                            adapter.notifyDataSetChanged();
-                            Toast.makeText(getApplicationContext(), "Successfully Added.", Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            Toast.makeText(getApplicationContext(), "Exception: Some internal error ocurred.", Toast.LENGTH_LONG).show();
-                        }
-                    }
+        switch(requestCode){
+            case 1:
+                if(resultCode==RESULT_OK){
+                    String FilePath = data.getData().getPath();
+                    saveDataInPref(FilePath);
                 }
-        );
+                break;
 
-        builder.setNegativeButton("Discard", new DialogInterface.OnClickListener()
-
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.cancel();
-                    }
-                }
-        );
-        builder.show();
+        }
     }
+
+    /**
+     * @method saveDataInPref
+     * @param filePath
+     * @desc Gets fileName and path and saves in cache as JSONArray format.
+     */
+
+    private void saveDataInPref(String filePath)
+    {
+        Toast.makeText(getApplicationContext(), "" + filePath, Toast.LENGTH_LONG).show();
+        String data = s.getString("data","[]");
+        try
+        {
+            //Save new json array in cache.
+            JSONArray jarray = new JSONArray(data);
+            jarray.put("" + filePath);
+            SharedPreferences.Editor se = getSharedPreferences(Constants.pref_docs, 0).edit();
+            se.putString("data", jarray.toString());
+            se.commit();
+
+            //Get data from sharedPref and parse into JSONArray and then ArrayList.
+            String strData = s.getString("data","[]");
+            JSONArray jsonArray = new JSONArray(strData);
+            list.clear();
+            for(int a = 0; a < jsonArray.length(); a++)
+            {
+                list.add("" + jsonArray.getString(a));
+            }
+            adapter.notifyDataSetChanged();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
 
 }
