@@ -1,26 +1,20 @@
 package visitor.app.visitorapp;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import visitor.app.utils.Constants;
@@ -40,7 +34,7 @@ public class DocsActivity extends AppCompatActivity implements AdapterView.OnIte
         setSupportActionBar(toolbar);
 
         //Get sharedPreferences
-        s = getSharedPreferences(Constants.pref_prod, 0);
+        s = getSharedPreferences(Constants.pref_docs, 0);
         try
         {
             //Get data from sharedPref and parse into JSONArray and then ArrayList.
