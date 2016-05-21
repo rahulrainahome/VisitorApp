@@ -197,7 +197,7 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
                 ViewGroup.LayoutParams params = lw.getLayoutParams();
                 holder.add("");
                 phoneAdapter.notifyDataSetChanged();
-                params.height = 200 * holder.size();
+                params.height = 100 * holder.size();
                 lw.setLayoutParams(params);
 
                 break;
