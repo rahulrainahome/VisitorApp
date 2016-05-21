@@ -7,6 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+/**
+ * @class: ViewActivity
+ * @desc: Class responsible for Showing the list of visitors.
+ */
+
 public class ViewActivity extends AppCompatActivity {
 
     @Override

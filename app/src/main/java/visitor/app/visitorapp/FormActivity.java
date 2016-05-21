@@ -26,6 +26,10 @@ import java.util.Calendar;
 import visitor.app.adapter.PhoneAdapter;
 import visitor.app.utils.Constants;
 
+/**
+ * @class: FormActivity
+ * @desc: Class responsible for Adding visitor data.
+ */
 
 public class FormActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 

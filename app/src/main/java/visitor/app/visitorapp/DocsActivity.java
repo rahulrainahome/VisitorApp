@@ -19,6 +19,11 @@ import java.util.ArrayList;
 
 import visitor.app.utils.Constants;
 
+/**
+ * @class: DocsActivity
+ * @desc: Class responsible for Document and Attachment Add/Del.
+ */
+
 public class DocsActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
 
     ListView lw;

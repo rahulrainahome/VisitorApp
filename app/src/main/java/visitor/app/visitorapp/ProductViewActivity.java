@@ -22,6 +22,10 @@ import java.util.ArrayList;
 
 import visitor.app.utils.Constants;
 
+/**
+ * @class: ProductViewActivity
+ * @desc: Class responsible for Product Interest Add/del.
+ */
 public class ProductViewActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
 
     ListView lw;

@@ -7,6 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+/**
+ * @class: VisitorActivity
+ * @desc: Class responsible for showing Detail of a visitor.
+ */
+
 public class VisitorActivity extends AppCompatActivity {
 
     @Override
