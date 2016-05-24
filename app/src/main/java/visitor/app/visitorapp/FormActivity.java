@@ -2,7 +2,9 @@ package visitor.app.visitorapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -34,7 +36,7 @@ import visitor.app.utils.Constants;
 public class FormActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     //UIView instances declarations.
-    EditText txtName, txtCompany, txtMobile, txtEmail, txtNotes, txtDate;
+    EditText txtName, txtCompany, txtEmail, txtNotes, txtDate;
     Spinner spProdInt;
     Button btnSubmit, btnAddPhone;
     ListView lw;
@@ -228,14 +230,38 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
         //validate the field data.
         String name = txtName.getText().toString();
         String company = txtCompany.getText().toString();
-        String mobile = txtMobile.getText().toString();
+        String phones = "123,345,4544,234324,2313"; //holder -- holding all the phone numbers entered.
+        String prodInter = selectProdInt.toString(); //-- holds the selected product interest for this visitor.
         String email = txtEmail.getText().toString();
         String notes = txtNotes.getText().toString();
         String date = txtDate.getText().toString();
 
         //if valid then save in DB.
-        mydatabase.execSQL("INSERT INTO visitor (name, company, mobile, email, notes, date, prodint) VALUES ('" + name + "','" + company + "','" + mobile + "','" + email + "','" + notes + "','" + date + "','" + selectProdInt + "')");
+        //mydatabase.execSQL("INSERT INTO visitor (name, company, mobile, email, notes, date, prodint) VALUES ('" + name + "','" + company + "','" + 00000 + "','" + email + "','" + notes + "','" + date + "','" + selectProdInt + "')");
+        String raw = "INSERT INTO visitor (name, company, mobile, email, notes, date, prodint) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        SQLiteStatement stmt = mydatabase.compileStatement(raw);
+        stmt.bindString(1, name);
+        stmt.bindString(2, company);
+        stmt.bindString(3, phones);
+        stmt.bindString(4, prodInter);
+        stmt.bindString(5, email);
+        stmt.bindString(6, notes);
+        stmt.bindString(7, date);
+        stmt.execute();
+
+
+
         Toast.makeText(getApplicationContext(), "Visitor data added", Toast.LENGTH_SHORT).show();
+
+
+        int ii = 0;
+        Cursor expenseSet = mydatabase.rawQuery("Select * from visitor", null);
+        while(expenseSet.moveToNext())
+        {
+            ii++ ;
+        }
+        Toast.makeText(getApplicationContext(), "Total- " + ii, Toast.LENGTH_SHORT).show();
+
     }
 
 
