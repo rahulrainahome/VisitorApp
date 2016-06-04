@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,9 +50,11 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
     ArrayList<String> list = null;
     PhoneAdapter phoneAdapter = null;
     ArrayList<String> holder = null;
+    DisplayMetrics metrics;
 
     //Flags declarations.
     String selectProdInt = "";
+    int densityDpi = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,8 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
         holder.add("");
         phoneAdapter = new PhoneAdapter(FormActivity.this, this, this, holder);
         lw.setAdapter(phoneAdapter);
+        metrics = getResources().getDisplayMetrics();
+        densityDpi = (int)(metrics.density * 160f);
 
         //Set the current date in field.
         Calendar c = Calendar.getInstance();
@@ -193,15 +198,18 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onClick(View v)
     {
+        ViewGroup.LayoutParams params = lw.getLayoutParams();
+        int x = 0;
         switch (v.getId())
         {
             case R.id.id_button_addphone:
 
                 //Add phone field.
-                ViewGroup.LayoutParams params = lw.getLayoutParams();
                 holder.add("");
                 phoneAdapter.notifyDataSetChanged();
-                params.height = 100 * holder.size();
+
+                x = densityDpi / 3;
+                params.height = x * holder.size();
                 lw.setLayoutParams(params);
 
                 break;
@@ -216,6 +224,11 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
                 //Handle phone field remove option.
                 String tagVal = String.valueOf(v.getTag());
                 Toast.makeText(getApplicationContext(), "" + tagVal, Toast.LENGTH_SHORT).show();
+                holder.remove(Integer.parseInt(tagVal));
+                x = densityDpi / 3;
+                params.height = x * holder.size();
+                lw.setLayoutParams(params);
+                phoneAdapter.notifyDataSetChanged();
 
                 break;
         }
@@ -230,7 +243,16 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
         //validate the field data.
         String name = txtName.getText().toString();
         String company = txtCompany.getText().toString();
-        String phones = "123,345,4544,234324,2313"; //holder -- holding all the phone numbers entered.
+        String phones = "";
+        for(int a = 0; a < holder.size(); a++)
+        {
+            if(a != 0)
+            {
+                phones = "" + phones + ",";
+            }
+            phones = "" + phones;
+        }
+        //String phones = "123,345,4544,234324,2313"; //holder -- holding all the phone numbers entered.
         String prodInter = selectProdInt.toString(); //-- holds the selected product interest for this visitor.
         String email = txtEmail.getText().toString();
         String notes = txtNotes.getText().toString();
