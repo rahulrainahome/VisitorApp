@@ -6,13 +6,13 @@ package visitor.app.model;
 public class Visitor {
 
     int id;
-    String name;
-    String category;
+    String name;    //--show in list
+    String category;  //--Category corresponds to Company Name.
     String mobile;
     String email;
     String notes;
-    String date;
-    String prodint;
+    String date;    //--show in list
+    String prodint;     //--show in list
 
     public Visitor()
     {
