@@ -5,14 +5,14 @@ package visitor.app.model;
  */
 public class Visitor {
 
-    int id;
-    String name;    //--show in list
-    String category;  //--Category corresponds to Company Name.
-    String mobile;
-    String email;
-    String notes;
-    String date;    //--show in list
-    String prodint;     //--show in list
+    public int id;
+    public String name;    //--show in list
+    public String category;  //--Category corresponds to Company Name.
+    public String mobile;
+    public String email;
+    public String notes;
+    public String date;    //--show in list
+    public String prodint;     //--show in list
 
     public Visitor()
     {

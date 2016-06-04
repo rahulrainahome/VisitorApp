@@ -265,21 +265,13 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
         stmt.bindString(1, name);
         stmt.bindString(2, company);
         stmt.bindString(3, phones);
-        stmt.bindString(4, prodInter);
-        stmt.bindString(5, email);
-        stmt.bindString(6, notes);
-        stmt.bindString(7, date);
+        stmt.bindString(4, email);
+        stmt.bindString(5, notes);
+        stmt.bindString(6, date);
+        stmt.bindString(7, prodInter);
         stmt.execute();
 
         Toast.makeText(getApplicationContext(), "Visitor data added", Toast.LENGTH_SHORT).show();
-
-//        int ii = 0;
-//        Cursor expenseSet = mydatabase.rawQuery("Select * from visitor", null);
-//        while(expenseSet.moveToNext())
-//        {
-//            ii++ ;
-//        }
-//        Toast.makeText(getApplicationContext(), "Total- " + ii, Toast.LENGTH_SHORT).show();
 
         startActivity(new Intent(FormActivity.this, ViewActivity.class));
         finish();
