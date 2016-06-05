@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -23,7 +24,7 @@ import visitor.app.utils.Constants;
  * @desc: Class responsible for Showing the list of visitors.
  */
 
-public class ViewActivity extends AppCompatActivity {
+public class ViewActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     //Data Objects for ListView
     ListView lw;
@@ -40,8 +41,9 @@ public class ViewActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         lw = (ListView)findViewById(R.id.listView3);
+        lw.setOnItemClickListener(this);
 
-        int ii = 0;
+        //Open the database and get all the Visitor details.
         if(mydatabase == null)
         {
             mydatabase = openOrCreateDatabase(Constants.dbname, MODE_PRIVATE, null);
@@ -58,15 +60,14 @@ public class ViewActivity extends AppCompatActivity {
             visitor.notes = "" + expenseSet.getString(5);
             visitor.date = "" + expenseSet.getString(6);
             visitor.prodint = "" + expenseSet.getString(7);
-
             list.add(visitor);
-            ii++;
         }
-        Toast.makeText(getApplicationContext(), "Total- " + ii, Toast.LENGTH_SHORT).show();
 
+        //Setting adapter.
         adapter = new VisitorAdapter(ViewActivity.this, this, list);
         lw.setAdapter(adapter);
 
+        //Close database after DB Operation.
         if(mydatabase != null)
         {
             if(mydatabase.isOpen())
@@ -81,10 +82,36 @@ public class ViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                //Naviagte to add new visitor and close this.
                 ViewActivity.this.startActivity(new Intent(ViewActivity.this, FormActivity.class));
                 ViewActivity.this.finish();
             }
         });
     }
 
+
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        //Hold selected data in Constants and navigate to its page.
+        Constants.selectedVisitor = list.get(position);
+        startActivity(new Intent(ViewActivity.this, VisitorActivity.class));
+        finish();
+    }
+
+    @Override
+    protected void onPause() {
+
+        //Close DB if open on Pause.
+        if(mydatabase != null)
+        {
+            if(mydatabase.isOpen())
+            {
+                mydatabase.close();
+                mydatabase = null;
+            }
+        }
+        super.onPause();
+    }
 }
