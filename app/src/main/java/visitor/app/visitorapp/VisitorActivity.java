@@ -8,6 +8,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import visitor.app.model.Visitor;
@@ -21,6 +23,10 @@ public class VisitorActivity extends AppCompatActivity {
 
     //SQLiteDatabase object declaration.
     SQLiteDatabase mydatabase = null;
+
+    //UI Controls
+    TextView txtName, txtCompany, txtMobile, txtEmail, txtNotes, txtDate, txtProdInt;
+    ImageView imgEmail, imgCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
