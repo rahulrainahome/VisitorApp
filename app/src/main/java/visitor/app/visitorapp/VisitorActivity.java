@@ -37,11 +37,26 @@ public class VisitorActivity extends AppCompatActivity {
                         .setAction("delete ?", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+
+                                //Delete this current visitor.
                                 Toast.makeText(getApplicationContext(), "To be deleted.", Toast.LENGTH_SHORT).show();
                             }
                         }).show();
             }
         });
+
+
+
+        //CREATE TABLE IF NOT EXISTS visitor (
+        // id INTEGER PRIMARY KEY NOT NULL,
+        // name varchar,
+        // company varchar,
+        // mobile varchar,
+        // email varchar,
+        // notes varchar,
+        // date varchar,
+        // prodint varchar
+
     }
 
     @Override
