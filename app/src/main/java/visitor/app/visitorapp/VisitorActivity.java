@@ -51,8 +51,8 @@ public class VisitorActivity extends AppCompatActivity {
         txtDate = (TextView)findViewById(R.id.id_date);
         txtProdInt = (TextView)findViewById(R.id.id_prod_int);
         imgEmail = (ImageView)findViewById(R.id.id_email_send);
-        imgCall = (ImageView)findViewById(R.id.id_call_phone);
         imgAttach = (ImageView)findViewById(R.id.id_email_attach);
+        imgCall = (ImageView)findViewById(R.id.id_call_phone);
         imgCall.setVisibility(View.GONE);
 
         visitor = Constants.selectedVisitor;
@@ -97,6 +97,25 @@ public class VisitorActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "To be deleted.", Toast.LENGTH_SHORT).show();
                             }
                         }).show();
+            }
+        });
+
+        imgEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //send email with attachments.
+                //use email intent with attachments and receiver email as Intent Extra.
+                Toast.makeText(getApplicationContext(), "Will send the email", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        imgAttach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Attach documents.
+                Toast.makeText(getApplicationContext(), "For the attachments.", Toast.LENGTH_SHORT).show();
             }
         });
 
