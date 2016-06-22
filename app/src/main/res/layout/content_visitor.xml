@@ -185,7 +185,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="0123456789"
+                    android:text="9898776601"
+                    android:textColorLink="#000000"
                     android:id="@+id/id_phone" />
 
             </LinearLayout>

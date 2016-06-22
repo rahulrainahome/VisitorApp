@@ -250,7 +250,7 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
             {
                 phones = "" + phones + ",";
             }
-            phones = "" + phones;
+            phones = "" + phones + holder.get(a);
         }
         //String phones = "123,345,4544,234324,2313"; //holder -- holding all the phone numbers entered.
         String prodInter = selectProdInt.toString(); //-- holds the selected product interest for this visitor.
@@ -272,7 +272,7 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
         stmt.execute();
 
         Toast.makeText(getApplicationContext(), "Visitor data added", Toast.LENGTH_SHORT).show();
-
+        Toast.makeText(getApplicationContext(), "" + phones, Toast.LENGTH_LONG).show();
         startActivity(new Intent(FormActivity.this, ViewActivity.class));
         finish();
     }
