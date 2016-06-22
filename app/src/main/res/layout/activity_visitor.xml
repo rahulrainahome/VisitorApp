@@ -30,9 +30,11 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="ksdjsdklfndsf"/>
+                android:padding="34dp"
+                android:id="@+id/id_number_attach"
+                android:text="No Attachments"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>

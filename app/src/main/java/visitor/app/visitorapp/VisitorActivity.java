@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import visitor.app.model.Visitor;
+import visitor.app.utils.Constants;
 
 /**
  * @class: VisitorActivity
@@ -25,15 +26,38 @@ public class VisitorActivity extends AppCompatActivity {
     SQLiteDatabase mydatabase = null;
 
     //UI Controls
-    TextView txtName, txtCompany, txtMobile, txtEmail, txtNotes, txtDate, txtProdInt;
-    ImageView imgEmail, imgCall;
+    TextView txtName, txtCompany, txtMobile, txtEmail, txtNotes, txtDate, txtProdInt, txtAttachment;
+    ImageView imgEmail, imgCall, imgAttach;
 
+    Visitor visitor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visitor);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        txtAttachment = (TextView)findViewById(R.id.id_number_attach);
+        txtName = (TextView)findViewById(R.id.id_name);
+        txtCompany = (TextView)findViewById(R.id.id_company);
+        txtMobile = (TextView)findViewById(R.id.id_phone);
+        txtEmail = (TextView)findViewById(R.id.id_email);
+        txtNotes = (TextView)findViewById(R.id.id_notes);
+        txtDate = (TextView)findViewById(R.id.id_date);
+        txtProdInt = (TextView)findViewById(R.id.id_prod_int);
+        imgEmail = (ImageView)findViewById(R.id.id_email_send);
+        imgCall = (ImageView)findViewById(R.id.id_call_phone);
+        imgAttach = (ImageView)findViewById(R.id.id_email_attach);
+
+        visitor = Constants.selectedVisitor;
+
+        txtName.setText("" + visitor.name);
+        txtCompany.setText("" + visitor.category);
+        txtMobile.setText("" + visitor.mobile);
+        txtEmail.setText("" + visitor.email);
+        txtNotes.setText("" + visitor.notes);
+        txtDate.setText("" + visitor.date);
+        txtProdInt.setText("" + visitor.prodint);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -50,18 +74,6 @@ public class VisitorActivity extends AppCompatActivity {
                         }).show();
             }
         });
-
-
-
-        //CREATE TABLE IF NOT EXISTS visitor (
-        // id INTEGER PRIMARY KEY NOT NULL,
-        // name varchar,
-        // company varchar,
-        // mobile varchar,
-        // email varchar,
-        // notes varchar,
-        // date varchar,
-        // prodint varchar
 
     }
 
