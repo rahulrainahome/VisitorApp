@@ -18,4 +18,5 @@ public class Constants {
     //Flags and indicators
     public static boolean CHANGE = false;
 
+
 }
