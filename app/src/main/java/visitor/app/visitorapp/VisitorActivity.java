@@ -159,7 +159,7 @@ public class VisitorActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 //Attach documents.
-                createPopupList();
+                startActivity(new Intent(VisitorActivity.this, AttachmentActivity.class));
             }
         });
 
@@ -221,59 +221,4 @@ public class VisitorActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * @method createPopupList
-     * @decs Creates Popup List View in alert dialog for displaying attachments.
-     */
-    private void createPopupList()
-    {
-        ListView lw = new ListView(getApplicationContext());
-        ArrayAdapter<String> adapter = null;
-        attachDocs.clear();
-
-        adapter = new ArrayAdapter<String>(VisitorActivity.this, android.R.layout.simple_list_item_checked, listDocs);
-        lw.setAdapter(adapter);
-
-        lw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                CheckedTextView check = (CheckedTextView) view;
-                TextView textItem = (TextView) view;
-                String item = textItem.getText().toString();
-
-                if (check.isChecked()) {
-                    check.setChecked(false);
-                    //remove item from attachment.
-                    for (int i = 0; i < attachDocs.size(); i++) {
-                        if (attachDocs.get(i).trim().equalsIgnoreCase(item.trim())) {
-                            attachDocs.remove(i);
-                            break;
-                        }
-                    }
-                } else {
-                    check.setChecked(true);
-                    //add item to attachment.
-                    attachDocs.add(item);
-
-                }
-                txtAttachment.setText(attachDocs.size() + " Email Attachments");
-            }
-        });
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(VisitorActivity.this);
-        alertDialogBuilder.setPositiveButton("Attach", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                Toast.makeText(VisitorActivity.this, "" + attachDocs.size() + " documents attached", Toast.LENGTH_SHORT).show();
-            }
-        });
-        alertDialogBuilder.setCancelable(false);
-        alertDialogBuilder.setIcon(android.R.drawable.ic_menu_share);
-        alertDialogBuilder.setTitle("Select Attachments");
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.setView(lw);
-        alertDialog.show();
-    }
 }

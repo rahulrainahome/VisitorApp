@@ -34,7 +34,8 @@
             android:name=".DocsActivity"
             android:label="@string/title_activity_docs"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ExportActivity"></activity>
+        <activity android:name=".ExportActivity" />
+        <activity android:name=".AttachmentActivity"></activity>
     </application>
 
 </manifest>
