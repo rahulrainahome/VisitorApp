@@ -18,5 +18,9 @@ public class Constants {
     //Flags and indicators
     public static boolean CHANGE = false;
 
+    //List docs attachments
+    public static ArrayList<String> attachDocs = new ArrayList<String>();
+
+
 
 }

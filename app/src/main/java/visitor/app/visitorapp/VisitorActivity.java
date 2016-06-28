@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -29,7 +30,10 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import visitor.app.model.Visitor;
 import visitor.app.utils.Constants;
@@ -50,11 +54,6 @@ public class VisitorActivity extends AppCompatActivity {
 
     //Data structures for holding data globally.
     Visitor visitor;
-    ArrayList<String> listDocs;
-    public static ArrayList<String> attachDocs;
-
-    //Other Android Service objects.
-    SharedPreferences s = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +61,7 @@ public class VisitorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_visitor);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        s = getSharedPreferences(Constants.pref_docs, 0);
+
 
         //Mappuingi all the UI components
         txtAttachment = (TextView)findViewById(R.id.id_number_attach);
@@ -77,6 +76,7 @@ public class VisitorActivity extends AppCompatActivity {
         imgAttach = (ImageView)findViewById(R.id.id_email_attach);
         imgCall = (ImageView)findViewById(R.id.id_call_phone);
         imgCall.setVisibility(View.GONE);
+        txtAttachment.setVisibility(View.GONE);
 
         //Get and show the selected visitor data.
         visitor = Constants.selectedVisitor;
@@ -109,23 +109,8 @@ public class VisitorActivity extends AppCompatActivity {
         txtMobile.setLinkTextColor(txtName.getCurrentTextColor());
         stripUnderlines(txtMobile);
 
-        //Get all the docs from cache and hold in global variable.
-        try
-        {
-            attachDocs = new ArrayList<String>();
-            listDocs = new ArrayList<String>();
-            String cache_docs = s.getString("data", "[]");
-            JSONArray jsonArrayDocs = new JSONArray(cache_docs.toString());
-            for(int i = 0; i <jsonArrayDocs.length(); i++)
-            {
-                listDocs.add(jsonArrayDocs.getString(i).toString());
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "EXCEPTION: Cache Docs Fetching and Parsing.", Toast.LENGTH_SHORT).show();
-        }
+        //Reset all the Attachments.
+        Constants.attachDocs = new ArrayList<String>();
 
         //FloatingActionButton code here.
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -150,7 +135,24 @@ public class VisitorActivity extends AppCompatActivity {
 
                 //send email with attachments.
                 //use email intent with attachments and receiver email as Intent Extra.
-                Toast.makeText(getApplicationContext(), "Will send the email", Toast.LENGTH_SHORT).show();
+                ArrayList<Uri> sendDoc = new ArrayList<Uri>();
+                Toast.makeText(getApplicationContext(), "Total: " + Constants.attachDocs.size(), Toast.LENGTH_SHORT).show();
+                Iterator<String> iterator = Constants.attachDocs.iterator();
+                String dataVal = "";
+                while ((dataVal = iterator.next()) != null){
+
+                    if(dataVal.trim().equals(""))
+                    {
+                        break;
+                    }
+                    File fileIn = new File(dataVal);
+                    Uri u = Uri.fromFile(fileIn);
+                    sendDoc.add(u);
+                }
+
+                Toast.makeText(getApplicationContext(), "Attachments: " + sendDoc.size(), Toast.LENGTH_SHORT).show();
+
+
             }
         });
 
@@ -185,6 +187,13 @@ public class VisitorActivity extends AppCompatActivity {
             }
         }
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        Constants.attachDocs = null;
+        super.onDestroy();
     }
 
     /**
