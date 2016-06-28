@@ -135,15 +135,15 @@ public class VisitorActivity extends AppCompatActivity {
 
                 //send email with attachments.
                 //use email intent with attachments and receiver email as Intent Extra.
-                ArrayList<Uri> sendDoc = new ArrayList<Uri>();
-                Toast.makeText(getApplicationContext(), "Total: " + Constants.attachDocs.size(), Toast.LENGTH_SHORT).show();
+                ArrayList<Uri> sendDoc = new ArrayList<Uri>();  //Attachments Array
                 Iterator<String> iterator = Constants.attachDocs.iterator();
                 String dataVal = "";
-                while ((dataVal = iterator.next()) != null){
+                while (iterator.hasNext()){
 
+                    dataVal = "" + iterator.next();
                     if(dataVal.trim().equals(""))
                     {
-                        break;
+                        continue;
                     }
                     File fileIn = new File(dataVal);
                     Uri u = Uri.fromFile(fileIn);
@@ -151,7 +151,12 @@ public class VisitorActivity extends AppCompatActivity {
                 }
 
                 Toast.makeText(getApplicationContext(), "Attachments: " + sendDoc.size(), Toast.LENGTH_SHORT).show();
-
+                final Intent ei = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                ei.setType("plain/text");
+                ei.putExtra(Intent.EXTRA_EMAIL, new String[] {"" + visitor.email});
+                ei.putExtra(Intent.EXTRA_SUBJECT, "Acknowledgement");
+                ei.putParcelableArrayListExtra(Intent.EXTRA_STREAM, sendDoc);
+                startActivityForResult(Intent.createChooser(ei, "Sending multiple attachment"), 12345);
 
             }
         });
