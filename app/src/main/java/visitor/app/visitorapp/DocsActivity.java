@@ -7,6 +7,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -78,6 +80,39 @@ public class DocsActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_docs, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_visitor:
+
+                startActivity(new Intent(DocsActivity.this, ViewActivity.class));
+                finish();
+                break;
+
+            case R.id.action_product:
+
+                startActivity(new Intent(DocsActivity.this, ProductViewActivity.class));
+                finish();
+                break;
+
+            case R.id.action_export:
+
+                startActivity(new Intent(DocsActivity.this, ExportActivity.class));
+
+                break;
+        }
+        return true;
+    }
+
+    @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
         final int pos = position;
@@ -92,10 +127,8 @@ public class DocsActivity extends AppCompatActivity implements AdapterView.OnIte
                             String oldStr = s.getString("data", "[]");
                             JSONArray json = new JSONArray(oldStr);
                             JSONArray newjson = new JSONArray();
-                            for(int a = 0; a < json.length(); a++)
-                            {
-                                if(a == pos)
-                                {
+                            for (int a = 0; a < json.length(); a++) {
+                                if (a == pos) {
                                     //leave the deleting entry.
                                     continue;
                                 }
@@ -111,8 +144,7 @@ public class DocsActivity extends AppCompatActivity implements AdapterView.OnIte
                             json = new JSONArray(s.getString("data", "[]"));
                             list.clear();
 
-                            for(int a = 0; a < json.length(); a++)
-                            {
+                            for (int a = 0; a < json.length(); a++) {
                                 list.add("" + json.getString(a));
                             }
 

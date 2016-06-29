@@ -2,7 +2,6 @@ package visitor.app.visitorapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.support.v7.app.AppCompatActivity;
@@ -148,7 +147,7 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.menu_form, menu);
+        getMenuInflater().inflate(R.menu.menu_add_visitor, menu);
         return true;
     }
 
@@ -156,28 +155,14 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        switch(id)
-        {
+        switch(id) {
             case R.id.action_visitor:
 
+                Toast.makeText(getApplicationContext(), "Data Discarded", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(FormActivity.this, ViewActivity.class));
                 finish();
                 break;
-            case R.id.action_product:
 
-                startActivity(new Intent(FormActivity.this, ProductViewActivity.class));
-                finish();
-                break;
-            case R.id.action_docs:
-
-                startActivity(new Intent(FormActivity.this, DocsActivity.class));
-                finish();
-                break;
-            case R.id.action_export:
-
-                startActivity(new Intent(FormActivity.this, ExportActivity.class));
-                finish();
-                break;
         }
 
 

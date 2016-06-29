@@ -1,6 +1,7 @@
 package visitor.app.visitorapp;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +10,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -72,6 +75,39 @@ public class ProductViewActivity extends AppCompatActivity implements AdapterVie
                 createProductInterest();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_product, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_visitors:
+
+                startActivity(new Intent(ProductViewActivity.this, ViewActivity.class));
+                finish();
+                break;
+
+            case R.id.action_attachment:
+
+                startActivity(new Intent(ProductViewActivity.this, DocsActivity.class));
+                finish();
+                break;
+
+            case R.id.action_export:
+
+                startActivity(new Intent(ProductViewActivity.this, ExportActivity.class));
+
+                break;
+        }
+        return true;
     }
 
     @Override

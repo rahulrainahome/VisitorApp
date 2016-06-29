@@ -5,13 +5,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -89,7 +89,37 @@ public class ViewActivity extends AppCompatActivity implements AdapterView.OnIte
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
+        getMenuInflater().inflate(R.menu.menu_visitor_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_product:
+
+                startActivity(new Intent(ViewActivity.this, ProductViewActivity.class));
+                finish();
+                break;
+
+            case R.id.action_attachment:
+
+                startActivity(new Intent(ViewActivity.this, DocsActivity.class));
+                finish();
+                break;
+
+            case R.id.action_export:
+
+                startActivity(new Intent(ViewActivity.this, ExportActivity.class));
+                break;
+        }
+        return true;
+    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
