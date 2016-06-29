@@ -48,6 +48,8 @@ public class ViewActivity extends AppCompatActivity implements AdapterView.OnIte
         {
             mydatabase = openOrCreateDatabase(Constants.dbname, MODE_PRIVATE, null);
         }
+        mydatabase.execSQL("CREATE TABLE IF NOT EXISTS visitor(id INTEGER PRIMARY KEY NOT NULL, name varchar, company varchar, mobile varchar, email varchar, notes varchar, date varchar, prodint varchar );");
+
         Cursor expenseSet = mydatabase.rawQuery("Select id, name, company, mobile, email, notes, date, prodint from visitor", null);
         while(expenseSet.moveToNext())
         {
