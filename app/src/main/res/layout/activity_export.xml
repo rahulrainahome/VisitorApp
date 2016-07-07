@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:gravity="center"
+    android:orientation="vertical"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="visitor.app.visitorapp.ExportActivity">
+    android:paddingTop="@dimen/activity_vertical_margin" >
 
 
 
-</RelativeLayout>
+    <ImageView
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_margin="30dp"
+        android:src="@drawable/icon_excel"
+        android:id="@+id/excel_Icon" />
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:padding="80dp"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:indeterminate="true"
+        android:layout_gravity="bottom" />
+
+
+</LinearLayout>

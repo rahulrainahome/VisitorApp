@@ -103,6 +103,23 @@
                 android:singleLine="true"
                 android:id="@+id/sp_prod_int" />
 
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="DATE" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rect_border"
+                android:padding="7dp"
+                android:textColor="@android:color/black"
+                android:id="@+id/et_date" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -112,33 +129,21 @@
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="120dp"
                 android:background="@drawable/rect_border"
                 android:padding="5dp"
+                android:ems="10"
+                android:gravity="top|left"
+                android:inputType="textMultiLine"
                 android:singleLine="false"
                 android:id="@+id/et_notes" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
-                android:text="DATE" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="date"
-                android:ems="10"
-                android:background="@drawable/rect_border"
-                android:padding="5dp"
-                android:singleLine="true"
-                android:id="@+id/et_date" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="SUBMIT"
+                android:editable="false"
+                android:focusable="false"
                 android:background="#c0504e"
                 android:layout_marginTop="25dp"
                 android:id="@+id/id_button_submit"
@@ -158,7 +163,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="15dp"
                 android:text="POWERED BY PROMOBILE"
                 android:textColor="#ffffff"
                 android:gravity="center"

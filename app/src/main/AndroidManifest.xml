@@ -16,7 +16,8 @@
 
         <activity
             android:name=".FormActivity"
-            android:label="@string/title_activity_new_visitor" />
+            android:label="@string/title_activity_new_visitor"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ProductViewActivity"
@@ -40,7 +41,8 @@
 
         <activity
             android:name=".ExportActivity"
-            android:label="@string/title_activity_export" />
+            android:label="@string/title_activity_export"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".AttachmentActivity"

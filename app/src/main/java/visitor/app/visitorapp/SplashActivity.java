@@ -60,7 +60,7 @@ public class SplashActivity extends AppCompatActivity {
                 }
                 else if(active == true)
                 {
-                    startActivity(new Intent(SplashActivity.this, ViewActivity.class));
+                    startActivity(new Intent(SplashActivity.this, FormActivity.class));
                     finish();
                 }
                 else
