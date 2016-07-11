@@ -3,11 +3,11 @@ package visitor.app.visitorapp;
 import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -24,18 +24,11 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.json.JSONArray;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import visitor.app.utils.Constants;
 
@@ -49,6 +42,10 @@ public class ExportActivity extends AppCompatActivity {
     ProgressBar progressBar;
     File file;
     private boolean flag = false;
+
+    //SQLiteDatabase object declaration.
+    SQLiteDatabase mydatabase = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,6 +141,21 @@ public class ExportActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    protected void onPause() {
+
+        //Check and close the database if open.
+        if(mydatabase != null)
+        {
+            if(mydatabase.isOpen())
+            {
+                mydatabase.close();
+            }
+            mydatabase = null;
+        }
+        super.onPause();
+    }
+
     /**
      * @method: exportExcel
      * @desc: Method for exporting data to excel sheet
@@ -154,14 +166,71 @@ public class ExportActivity extends AppCompatActivity {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("Visitors");
 
+        //Excel data handling starts
         HSSFRow rowA = sheet.createRow(0);
 
         HSSFCell cellA = rowA.createCell(0);
-        cellA.setCellValue(new HSSFRichTextString("MY FIRST Data"));
-
+        cellA.setCellValue(new HSSFRichTextString("Sno."));
         HSSFCell cellB = rowA.createCell(1);
-        cellB.setCellValue(new HSSFRichTextString("MY SECOND Data"));
+        cellB.setCellValue(new HSSFRichTextString("NAME"));
+        HSSFCell cellC = rowA.createCell(2);
+        cellC.setCellValue(new HSSFRichTextString("COMPANY/CATEGORY"));
+        HSSFCell cellD = rowA.createCell(3);
+        cellD.setCellValue(new HSSFRichTextString("PRODUCT INTEREST"));
+        HSSFCell cellE = rowA.createCell(4);
+        cellE.setCellValue(new HSSFRichTextString("DATE"));
+        HSSFCell cellF = rowA.createCell(5);
+        cellF.setCellValue(new HSSFRichTextString("EMAIL"));
+        HSSFCell cellG = rowA.createCell(6);
+        cellG.setCellValue(new HSSFRichTextString("PHONE(S)"));
+        HSSFCell cellH = rowA.createCell(7);
+        cellH.setCellValue(new HSSFRichTextString("NOTES"));
 
+        mydatabase = openOrCreateDatabase(Constants.dbname, MODE_PRIVATE, null);
+        int i = 0;
+        Cursor result = mydatabase.rawQuery("Select id, name, company, prodint, date, email, mobile, notes from visitor;", null);
+        while(result.moveToNext())
+        {
+            i += 1;
+            HSSFRow rowX = sheet.createRow(i);
+
+            HSSFCell cell0 = rowX.createCell(0);
+            cell0.setCellValue(new HSSFRichTextString("" + i)); //sno
+
+            HSSFCell cell1 = rowX.createCell(1);
+            cell1.setCellValue(new HSSFRichTextString("" + result.getString(1)));   //name
+
+            HSSFCell cell2 = rowX.createCell(2);
+            cell2.setCellValue(new HSSFRichTextString("" + result.getString(2)));   //company/category
+
+            HSSFCell cell3 = rowX.createCell(3);
+            cell3.setCellValue(new HSSFRichTextString("" + result.getString(3)));   //product interest
+
+            HSSFCell cell4 = rowX.createCell(4);
+            cell4.setCellValue(new HSSFRichTextString("" + result.getString(4)));   //date
+
+            HSSFCell cell5 = rowX.createCell(5);
+            cell5.setCellValue(new HSSFRichTextString("" + result.getString(5)));   //email
+
+            HSSFCell cell6 = rowX.createCell(6);
+            cell6.setCellValue(new HSSFRichTextString("" + result.getString(6)));   //mobile
+
+            HSSFCell cell7 = rowX.createCell(7);
+            cell7.setCellValue(new HSSFRichTextString("" + result.getString(7)));   //notes
+
+        }
+
+        //Close database after DB Operation.
+        if(mydatabase != null)
+        {
+            if(mydatabase.isOpen())
+            {
+                mydatabase.close();
+            }
+        }
+
+
+        //Excel data handling ends
         FileOutputStream fos = null;
         try
         {
