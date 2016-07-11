@@ -13,6 +13,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -32,6 +34,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import visitor.app.utils.Constants;
 
@@ -44,6 +48,7 @@ public class ExportActivity extends AppCompatActivity {
 
     ProgressBar progressBar;
     File file;
+    private boolean flag = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,12 +93,64 @@ public class ExportActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_export, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_visitor:
+
+                if(!flag)
+                {
+                    Snackbar.make(progressBar, "File not exported.", Snackbar.LENGTH_LONG)
+                            .setAction("Try Again ?", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                    exportExcel();
+
+                                }
+
+                            }).show();
+                    return true;
+                }
+                ArrayList<Uri> sendDoc = new ArrayList<Uri>();
+                File fileIn = new File(file.getPath());
+                Uri u = Uri.fromFile(fileIn);
+                sendDoc.add(u);
+
+                try
+                {
+                    final Intent ei = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                    ei.setType("plain/text");
+                    ei.putParcelableArrayListExtra(Intent.EXTRA_STREAM, sendDoc);
+                    startActivityForResult(Intent.createChooser(ei, "Sending multiple attachment"), 12345);
+
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(getApplicationContext(), "No package to share file.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+
+        return true;
+    }
+
     /**
      * @method: exportExcel
      * @desc: Method for exporting data to excel sheet
      */
     private void exportExcel()
     {
+        progressBar.setVisibility(View.VISIBLE);
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("Visitors");
 
@@ -119,6 +176,7 @@ public class ExportActivity extends AppCompatActivity {
                     .setAction("OPEN ?", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+
                             Uri uri = Uri.fromFile(file);
                             Intent intent = new Intent(Intent.ACTION_VIEW);
                             intent.setDataAndType(uri , "application/vnd.ms-excel");
@@ -135,6 +193,7 @@ public class ExportActivity extends AppCompatActivity {
                         }
 
                     }).show();
+            flag = true;
         }
         catch (IOException e)
         {
@@ -143,6 +202,7 @@ public class ExportActivity extends AppCompatActivity {
         }
         finally
         {
+            progressBar.setVisibility(View.GONE);
             if (fos != null) {
                 try {
                     fos.flush();
@@ -153,13 +213,6 @@ public class ExportActivity extends AppCompatActivity {
             }
 
         }
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
 
-                finish();
-            }
-        }, 5000);
     }
 }

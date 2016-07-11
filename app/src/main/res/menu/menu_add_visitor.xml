@@ -5,7 +5,6 @@
     <item android:id="@+id/action_visitor"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
-        android:icon="@android:drawable/ic_menu_delete"
         android:title="Discard" />
 
 </menu>

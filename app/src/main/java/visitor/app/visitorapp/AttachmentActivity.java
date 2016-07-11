@@ -1,6 +1,8 @@
 package visitor.app.visitorapp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +16,9 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import visitor.app.adapter.AttachmentAdapter;
 import visitor.app.utils.Constants;
@@ -92,7 +96,39 @@ public class AttachmentActivity extends AppCompatActivity implements CompoundBut
         int id = item.getItemId();
         switch(id) {
             case R.id.action_done:
-                finish();
+
+                try
+                {
+
+                    ArrayList<Uri> sendDoc = new ArrayList<Uri>();  //Attachments Array
+                    Iterator<String> iterator = Constants.attachDocs.iterator();
+                    String dataVal = "";
+                    while (iterator.hasNext()){
+
+                        dataVal = "" + iterator.next();
+                        if(dataVal.trim().equals(""))
+                        {
+                            continue;
+                        }
+                        File fileIn = new File(dataVal);
+                        Uri u = Uri.fromFile(fileIn);
+                        sendDoc.add(u);
+                    }
+
+                    Toast.makeText(getApplicationContext(), "Attachments: " + sendDoc.size(), Toast.LENGTH_SHORT).show();
+                    final Intent ei = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                    ei.setType("plain/text");
+                    ei.putExtra(Intent.EXTRA_EMAIL, new String[] {"" + Constants.selectedVisitor.email});
+                    ei.putExtra(Intent.EXTRA_SUBJECT, "Visitor List");
+                    ei.putParcelableArrayListExtra(Intent.EXTRA_STREAM, sendDoc);
+                    startActivityForResult(Intent.createChooser(ei, "Sending multiple attachment"), 12345);
+
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(getApplicationContext(), "Unable to send email.", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
         }
         return true;
@@ -100,7 +136,6 @@ public class AttachmentActivity extends AppCompatActivity implements CompoundBut
 
     @Override
     protected void onPause() {
-        Toast.makeText(getApplicationContext(), "Docs Attached", Toast.LENGTH_SHORT).show();
         super.onPause();
     }
 }

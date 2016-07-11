@@ -56,6 +56,7 @@ public class VisitorActivity extends AppCompatActivity {
 
     //Data structures for holding data globally.
     Visitor visitor;
+    String firstMob = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,7 @@ public class VisitorActivity extends AppCompatActivity {
         imgEmail = (ImageView)findViewById(R.id.id_email_send);
         imgAttach = (ImageView)findViewById(R.id.id_email_attach);
         imgCall = (ImageView)findViewById(R.id.id_call_phone);
-        imgCall.setVisibility(View.GONE);
+
         txtAttachment.setVisibility(View.GONE);
 
         //Get and show the selected visitor data.
@@ -94,6 +95,7 @@ public class VisitorActivity extends AppCompatActivity {
             if(nmob == 0)
             {
                 mob = "" + mobs[nmob].toString();
+                firstMob = "" + mob;
             }
             else
             {
@@ -169,7 +171,7 @@ public class VisitorActivity extends AppCompatActivity {
                 final Intent ei = new Intent(Intent.ACTION_SEND_MULTIPLE);
                 ei.setType("plain/text");
                 ei.putExtra(Intent.EXTRA_EMAIL, new String[] {"" + visitor.email});
-                ei.putExtra(Intent.EXTRA_SUBJECT, "Acknowledgement");
+                ei.putExtra(Intent.EXTRA_SUBJECT, "Visitor List");
                 ei.putParcelableArrayListExtra(Intent.EXTRA_STREAM, sendDoc);
                 startActivityForResult(Intent.createChooser(ei, "Sending multiple attachment"), 12345);
 
@@ -182,6 +184,31 @@ public class VisitorActivity extends AppCompatActivity {
 
                 //Attach documents.
                 startActivity(new Intent(VisitorActivity.this, AttachmentActivity.class));
+            }
+        });
+
+        imgCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //SMS first phone
+                if (firstMob.trim().isEmpty())
+                {
+                    Toast.makeText(getApplicationContext(), "No primary mobile number.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Uri uri = Uri.parse("smsto:" + firstMob);
+                Intent smsSIntent = new Intent(Intent.ACTION_SENDTO, uri);
+                smsSIntent.putExtra("sms_body", "");
+                try{
+                    startActivity(smsSIntent);
+                } catch (Exception ex) {
+                    Toast.makeText(VisitorActivity.this, "Your sms has failed...", Toast.LENGTH_LONG).show();
+                    ex.printStackTrace();
+
+                }
+
             }
         });
 
