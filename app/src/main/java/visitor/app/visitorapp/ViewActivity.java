@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ import visitor.app.utils.Constants;
  * @desc: Class responsible for Showing the list of visitors.
  */
 
-public class ViewActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class ViewActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     //Data Objects for ListView
     ListView lw;
@@ -34,6 +35,9 @@ public class ViewActivity extends AppCompatActivity implements AdapterView.OnIte
     //SQLiteDatabase object declaration.
     SQLiteDatabase mydatabase = null;
 
+    //flag false=default true=OnLongItemClick
+    boolean longClickFlag = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +45,8 @@ public class ViewActivity extends AppCompatActivity implements AdapterView.OnIte
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         lw = (ListView)findViewById(R.id.listView3);
-        lw.setOnItemClickListener(this);
+        lw.setOnItemClickListener(this);        //list View item click.
+        lw.setOnItemLongClickListener(this);    //list view item long click.
 
         //Open the database and get all the Visitor details.
         if(mydatabase == null)
@@ -127,9 +132,24 @@ public class ViewActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         //Hold selected data in Constants and navigate to its page.
+        if(longClickFlag)
+        {
+            return;
+        }
         Constants.selectedVisitor = list.get(position);
         startActivity(new Intent(ViewActivity.this, VisitorActivity.class));
         finish();
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+        //Handling on item long click for edit.
+        longClickFlag = true;
+        Constants.selectedVisitor = list.get(position);
+        startActivity(new Intent(this, EditActivity.class));
+        finish();
+        return false;
     }
 
     @Override
@@ -146,4 +166,6 @@ public class ViewActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         super.onPause();
     }
+
+
 }

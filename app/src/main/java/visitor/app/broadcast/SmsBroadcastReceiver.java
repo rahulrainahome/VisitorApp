@@ -33,7 +33,7 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
 
 
                 if (!TextUtils.isEmpty(smsBody) && !TextUtils.isEmpty(address)) {
-                    if ((smsBody.contains(Constants.ACTIVATION_VALIDATION_MSG)) || (address.contains(Constants.ACTIVATION_VALICATION_NUMBER))) {
+                    if ((smsBody.contains(Constants.ACTIVATION_VALIDATION_MSG)) /*&& (address.contains(Constants.ACTIVATION_VALICATION_NUMBER))*/) {
 
                         Toast.makeText(context, "VisitorApp Activated by SMS.", Toast.LENGTH_SHORT).show();
 

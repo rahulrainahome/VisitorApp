@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Visitor App</string>
-    <string name="title_activity_new_visitor">New Visitor</string>
+    <string name="title_activity_new_visitor">Add Visitor</string>
     <string name="title_activity_product_view">Products</string>
     <string name="title_activity_view">Visitors</string>
     <string name="title_activity_visitor">Visitor</string>
@@ -97,4 +97,5 @@
     <string name="title_activity_docs">Documents</string>
     <string name="title_activity_export">Export Document</string>
     <string name="title_activity_attach">Select Attachments</string>
+    <string name="title_activity_edit">Edit Visitor</string>
 </resources>

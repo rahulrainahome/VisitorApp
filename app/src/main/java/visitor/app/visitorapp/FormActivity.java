@@ -180,7 +180,6 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
 
         }
 
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -282,7 +281,7 @@ public class FormActivity extends AppCompatActivity implements AdapterView.OnIte
         stmt.bindString(7, prodInter);
         stmt.execute();
 
-        Toast.makeText(getApplicationContext(), "Visitor data added", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Successfully added", Toast.LENGTH_SHORT).show();
         //Toast.makeText(getApplicationContext(), "" + phones, Toast.LENGTH_LONG).show();
         startActivity(new Intent(FormActivity.this, ViewActivity.class));
         finish();
