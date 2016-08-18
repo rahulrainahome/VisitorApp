@@ -1,6 +1,7 @@
 package visitor.app.visitorapp;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,11 +9,13 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.Settings;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,17 +24,19 @@ import org.json.JSONArray;
 
 import visitor.app.utils.Constants;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity implements DialogInterface.OnClickListener {
 
     private SharedPreferences s;
     private boolean active = false;
     private boolean wasInactive = false;
+    DialogInterface.OnClickListener listener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);
-
+        listener = this;
         s = getSharedPreferences(Constants.SMS_ACTIVE, 0);
         String str = s.getString("ACTIVE", "").trim();
         if(!str.isEmpty())
@@ -69,19 +74,13 @@ public class SplashActivity extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
                     builder.setTitle("Alert");
                     builder.setMessage("Application not active. Please contact Admin");
-                    builder.setCancelable(false);
 
-                    // Set up the buttons
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    SplashActivity.this.finish();
-                                }
-                            }
-                    );
+                    //Set up the buttons
+                    builder.setPositiveButton("OK", SplashActivity.this.listener);
 
                     builder.show();
+                   // Toast.makeText(getApplicationContext(), "Application not active. Please contact Admin", Toast.LENGTH_LONG).show();
+
                 }
 
             }
@@ -114,18 +113,17 @@ public class SplashActivity extends AppCompatActivity {
                 builder.setCancelable(false);
 
                 // Set up the buttons
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                SplashActivity.this.finish();
-                            }
-                        }
-                );
+                builder.setPositiveButton("OK", this);
 
                 builder.show();
             }
         }
 
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+
+        SplashActivity.this.finish();
     }
 }
