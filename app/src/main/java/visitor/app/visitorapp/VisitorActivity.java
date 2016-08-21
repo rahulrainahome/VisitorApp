@@ -45,7 +45,7 @@ import visitor.app.utils.Constants;
  * @desc: Class responsible for showing Detail of a visitor.
  */
 
-public class VisitorActivity extends AppCompatActivity {
+public class VisitorActivity extends AppCompatActivity implements View.OnClickListener {
 
     //SQLiteDatabase object declaration.
     SQLiteDatabase mydatabase = null;
@@ -57,6 +57,9 @@ public class VisitorActivity extends AppCompatActivity {
     //Data structures for holding data globally.
     Visitor visitor;
     String firstMob = "";
+
+    //View onclick listener
+    View.OnClickListener listener = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,7 @@ public class VisitorActivity extends AppCompatActivity {
         imgCall = (ImageView)findViewById(R.id.id_call_phone);
 
         txtAttachment.setVisibility(View.GONE);
+        listener = this;
 
         //Get and show the selected visitor data.
         visitor = Constants.selectedVisitor;
@@ -122,27 +126,7 @@ public class VisitorActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Are you sure to delete this?", Snackbar.LENGTH_LONG)
-                        .setAction("delete ?", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                //Delete this current visitor.
-                                try {
-
-                                    mydatabase = openOrCreateDatabase(Constants.dbname, MODE_PRIVATE, null);
-                                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS visitor(id INTEGER PRIMARY KEY NOT NULL, name varchar, company varchar, mobile varchar, email varchar, notes varchar, date varchar, prodint varchar );");
-                                    mydatabase.execSQL("DELETE FROM visitor where id = " + visitor.id + ";");
-                                    Toast.makeText(getApplicationContext(), "Deleted.", Toast.LENGTH_SHORT).show();
-                                }
-                                catch (Exception e) {
-
-                                    e.printStackTrace();
-                                    Toast.makeText(getApplicationContext(), "Error while deleting data", Toast.LENGTH_SHORT).show();
-                                }
-                                startActivity(new Intent(VisitorActivity.this, ViewActivity.class));
-                                finish();
-                            }
-                        }).show();
+                        .setAction("delete ?", VisitorActivity.this.listener).show();
             }
         });
 
@@ -241,6 +225,36 @@ public class VisitorActivity extends AppCompatActivity {
 
         Constants.attachDocs = null;
         super.onDestroy();
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        //Delete this current visitor.
+        try {
+
+            mydatabase = openOrCreateDatabase(Constants.dbname, MODE_PRIVATE, null);
+            mydatabase.execSQL("CREATE TABLE IF NOT EXISTS visitor(id INTEGER PRIMARY KEY NOT NULL, name varchar, company varchar, mobile varchar, email varchar, notes varchar, date varchar, prodint varchar );");
+            mydatabase.execSQL("DELETE FROM visitor where id = " + visitor.id + ";");
+            Toast.makeText(getApplicationContext(), "Deleted.", Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e) {
+
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Error while deleting data", Toast.LENGTH_SHORT).show();
+        }
+        finally {
+            if(mydatabase != null)
+            {
+                if(mydatabase.isOpen())
+                {
+                    mydatabase.close();
+                }
+            }
+            mydatabase = null;
+        }
+        startActivity(new Intent(VisitorActivity.this, ViewActivity.class));
+        finish();
     }
 
     /**
